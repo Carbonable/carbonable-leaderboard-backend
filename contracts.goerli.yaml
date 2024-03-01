@@ -1,0 +1,70 @@
+start_block: 895500
+contracts:
+  - name: project_3525
+    address: 0x02a3115cac541dbface5dc0ab2034c87d91488844d4a3d0e52bae672737085bb
+    events:
+      Transfer: "project:transfer"
+      TransferValue: "project:transfer-value"
+      SlotChanged: "project:slot-changed"
+  - name: minter_banegas_farm
+    address: 0x06c1c09fe078a34b9d043396fd1d8494bad934bccb545f1302fcb2d6faa3b630
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_banegas_farm
+    address: 0x008637332b17f5ffe7f21f076389e8a5461f25fbc0049ac0243b4e08591280df
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_banegas_farm
+    address: 0x00f6019754ab54ea7d806720d17b425c799db5ebb337e4b2d8c1ed71fc35f342
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: minter_las_delicias
+    address: 0x04c9c5303f0c0f40cdfd5f5631052288185e37abe3af54de9c37610b423b1b25
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_las_delicias
+    address: 0x04f634a74451bc19e4d537326dff7552c225040e9d9c16b26a32466eebdf9688
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_las_delicias
+    address: 0x0370e85e8f315dc352eeef7e7f0f5d70e89c699384cbcb81a11a7089fa87ff66
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: minter_manjarisoa
+    address: 0x0235329fd8c24849169c5240e8d043adbdf45cd91e40a1af22dc6013517cb7a1
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_manjarisoa
+    address: 0x06d405ad5e6620e1a18ea8f82aed618adf8710af5e9f3d0a86722583bfff725f
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_manjarisoa
+    address: 0x00939bfcd027026c4706263832201a28e704ed28da568ced5851185005cf93e3
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: project_3525_karathuru
+    address: 0x014c6533fec6fd168189b49150907db533e8be3a2e69b0657ae4ec6459a94668
+    events:
+      Transfer: "project:transfer"
+      TransferValue: "project:transfer-value"
+      SlotChanged: "project:slot-changed"
+  - name: minter_karathuru
+    address: 0x063d57be1a3758826b8f14e16c852ba8ec4eedf26378050c31ab9a134348cde9
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"

@@ -1,0 +1,68 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Metadata {
+  slot: String
+  project_name: String
+}
+
+type PointDetails {
+  rule: String
+  value: Int
+  metadata: Metadata
+}
+
+type Categories {
+  fund: String!
+  farming: String!
+  other: String!
+}
+
+type LeaderboardLineData {
+  id: ID!
+  wallet_address: String!
+  points: [PointDetails]!
+  categories: Categories!
+  total_score: String!
+  position: Int!
+}
+
+type Leaderboard {
+  data: [LeaderboardLineData!]!
+  page_info: PageInfo!
+}
+
+type BoostForValue {
+  value: String!
+  total_score: String!
+  boost: String!
+}
+type NextBoostForValue {
+  missing: String!
+  total_score: String!
+  boost: String!
+}
+
+type PageInfo {
+   max_page: Int!
+   page: Int!
+   limit: Int!
+   count: Int!
+   has_next_page: Boolean!
+   has_previous_page: Boolean!
+}
+
+input Pagination {
+   page: Int!
+   limit: Int!
+}
+
+type Query {
+  leaderboard(pagination: Pagination!): Leaderboard!
+  leaderboardForWallet(wallet_address: String!): LeaderboardLineData!
+
+  boostForWallet(wallet_address: String!, value_to_buy: Int!, address: String!, slot: Int!): BoostForValue!
+  nextBoostForWallet(wallet_address: String!, value_to_buy: Int!, address: String!, slot: Int!): NextBoostForValue!
+}
+

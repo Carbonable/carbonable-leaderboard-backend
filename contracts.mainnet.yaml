@@ -1,0 +1,94 @@
+start_block: 370400
+contracts:
+  - name: project_3525
+    address: 0x0516d0acb6341dcc567e85dc90c8f64e0c33d3daba0a310157d6bba0656c8769
+    events:
+      Transfer: "project:transfer"
+      TransferValue: "project:transfer-value"
+      SlotChanged: "project:slot-changed"
+  - name: minter_banegas_farm
+    address: 0x065ff26209e5b2089e84488568ca84d7981d95f2ccb77f2f39878c4ab98e96cc
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_banegas_farm
+    address: 0x0324b531f731100b494e2f978a26b20b5870585dd96d9f1166b43a28ebbb8aba
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_banegas_farm
+    address: 0x03d25473be5a6316f351e8f964d0c303357c006f7107779f648d9879b7c6d58a
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: migrator_banegas_farm
+    address: 0x009bae24da785585f412dc16282d22fe86473750e5f99e0bda30a78aa262a3b5
+    events:
+      Migration: "migrator:migration"
+  - name: minter_las_delicias
+    address: 0x04673097fab74b77264c05982cd1ee6afaa2ee81787851c3cb47a3ab70357212
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_las_delicias
+    address: 0x022f40128af9798a0b734874fd993bbab6cf75845f26f844cb151b7041132c6d
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_las_delicias
+    address: 0x00426d4e86913759bcc49b7f992b1fe62e6571e8f8089c23d95fea815dbad471
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: migrator_las_delicias
+    address: 0x019c624eab3bebbc8a37ed90ee8582a606103792caffc91e9939af027175fa7d
+    events:
+      Migration: "migrator:migration"
+  - name: minter_manjarisoa
+    address: 0x0645af9030761e0ecacf0f15876b6cc0720f38ba929b22a76697abc2e5ab4ef2
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: offseter_manjarisoa
+    address: 0x04258037980fcc15083cde324abe1861ac00d4d48b7d60d76b5efd6f57e59e73
+    events:
+      Deposit: "offseter:deposit"
+      Withdraw: "offseter:withdraw"
+      Claim: "offseter:claim"
+  - name: yielder_manjarisoa
+    address: 0x03afe61732ed9b226309775ac4705129319729d3bee81da5632146ffd72652ae
+    events:
+      Deposit: "yielder:deposit"
+      Withdraw: "yielder:withdraw"
+      Claim: "yielder:claim"
+  - name: migrator_manjarisoa_small
+    address: 0x071e5717a72c700fafedbe6865ac01164c12a4b6c594681b6e974a4703b82d58
+    events:
+      Migration: "migrator:migration"
+  - name: minter_manjarisoa_small
+    address: 0x5321d00440218677b1de426679b7e77381dbb846ee1ae54dc084951f99c646
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: migrator_manjarisoa_medium
+    address: 0x0484360110efcb51def976464411461595ec0f22a9f8c3cc8b116c216a46cfcd
+    events:
+      Migration: "migrator:migration"
+  - name: minter_manjarisoa_medium
+    address: 0x03d983ed77d966515c066d49aa35cefffc89231cb33b9593a8964f58eca8ccd8
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
+  - name: migrator_manjarisoa_large
+    address: 0x042f9588a598e23dc1c25cf7e9298d6e173dd0e8913642524619678b9dfd3910
+    events:
+      Migration: "migrator:migration"
+  - name: minter_manjarisoa_large
+    address: 0x06458bdd463dc9cc8057c586ef5ebd80a6984c5ebcfb7b5271f25dd3d23ddfb1
+    events:
+      Buy: "minter:buy"
+      Airdrop: "minter:airdrop"
