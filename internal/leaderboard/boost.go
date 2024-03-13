@@ -28,6 +28,20 @@ type Boost struct {
 
 type KarathuruFundingMilestoneBoostCalculator struct {
 	Aggregator BuyValueAggregator
+	Steps      []boostValueItem
+}
+
+func NewKaratFundingMilestoneBoostCalculator(a BuyValueAggregator) KarathuruFundingMilestoneBoostCalculator {
+	return KarathuruFundingMilestoneBoostCalculator{
+		Aggregator: a,
+		Steps: []boostValueItem{
+			{50000, 300},
+			{150000, 200},
+			{300000, 150},
+			{500000, 120},
+			{700000, 110},
+		},
+	}
 }
 
 func (bc KarathuruFundingMilestoneBoostCalculator) Check(e DomainEvent) *Boost {
@@ -57,27 +71,11 @@ func (bc KarathuruFundingMilestoneBoostCalculator) Apply(e DomainEvent, b *Boost
 		return nil
 	}
 
-	if mv.Cmp(uint256.NewInt(50000)) <= 0 {
-		s.Points = mulCoeficient(s.Points, uint256.NewInt(300))
-		return s
-	}
-
-	if mv.Cmp(uint256.NewInt(150000)) <= 0 {
-		s.Points = mulCoeficient(s.Points, uint256.NewInt(200))
-		return s
-	}
-
-	if mv.Cmp(uint256.NewInt(300000)) <= 0 {
-		s.Points = mulCoeficient(s.Points, uint256.NewInt(150))
-		return s
-	}
-	if mv.Cmp(uint256.NewInt(500000)) <= 0 {
-		s.Points = mulCoeficient(s.Points, uint256.NewInt(120))
-		return s
-	}
-	if mv.Cmp(uint256.NewInt(700000)) <= 0 {
-		s.Points = mulCoeficient(s.Points, uint256.NewInt(110))
-		return s
+	for _, v := range bc.Steps {
+		if mv.Cmp(uint256.NewInt(uint64(v.step))) <= 0 {
+			s.Points = mulCoeficient(s.Points, uint256.NewInt(v.coef))
+			return s
+		}
 	}
 
 	return s

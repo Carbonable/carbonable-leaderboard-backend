@@ -61,9 +61,7 @@ var _ = Describe("Boost", func() {
 	Context("KarathuruFundingMilestoneBoostCalculator", func() {
 		When("I check if a boost exists", func() {
 			It("boost only Karaturu project", func() {
-				boost := leaderboard.KarathuruFundingMilestoneBoostCalculator{
-					Aggregator: newGivenValueMinterValueAggregator(1000000),
-				}
+				boost := leaderboard.NewKaratFundingMilestoneBoostCalculator(newGivenValueMinterValueAggregator(1000000))
 				buy := buyProjectEvt("Banegas Farm", 100)
 				Expect(boost.Check(buy)).To(BeNil())
 
@@ -83,9 +81,7 @@ var _ = Describe("Boost", func() {
 		When("I apply a boost", func() {
 			It("apply directly", func() {
 				aggregator := newGivenValueMinterValueAggregator(50000)
-				boost := leaderboard.KarathuruFundingMilestoneBoostCalculator{
-					Aggregator: aggregator,
-				}
+				boost := leaderboard.NewKaratFundingMilestoneBoostCalculator(aggregator)
 
 				buy := buyProjectEvt("Karathuru", 100*1000000)
 				Expect(boost.Check(buy)).NotTo(BeNil())
@@ -153,9 +149,7 @@ var _ = Describe("Boost", func() {
 
 func testKarathuruMilestone(value uint64, expected string) func() {
 	return func() {
-		boost := leaderboard.KarathuruFundingMilestoneBoostCalculator{
-			Aggregator: newGivenValueMinterValueAggregator(value),
-		}
+		boost := leaderboard.NewKaratFundingMilestoneBoostCalculator(newGivenValueMinterValueAggregator(value))
 
 		buy := buyProjectEvt("Karathuru", 100)
 		b := boost.Check(buy)

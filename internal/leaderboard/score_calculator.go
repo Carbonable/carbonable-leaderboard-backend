@@ -169,9 +169,7 @@ func FullScoreCalculatorManager(aggregator BuyValueAggregator) *ScoreCalculatorM
 			&EarlyAdopterScoreCalculator{},
 		),
 		WithBoosters(
-			KarathuruFundingMilestoneBoostCalculator{
-				Aggregator: aggregator,
-			},
+			NewKaratFundingMilestoneBoostCalculator(aggregator),
 			&ProjectValueBoostCalculator{},
 		),
 	)
