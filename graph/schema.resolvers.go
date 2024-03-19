@@ -141,8 +141,11 @@ func itemToGqlModel(item leaderboardQueryResult) *model.LeaderboardLineData {
 	for _, point := range item.Points {
 		slot := point.Metadata["slot"]
 		pName := point.Metadata["project_name"]
+		date := point.Metadata["date"]
+		event := point.Metadata["event"]
+		boosts := point.Metadata["boosts"]
 		value := int(point.Value)
-		points = append(points, &model.PointDetails{Rule: &point.Rule, Value: &value, Metadata: &model.Metadata{Slot: &slot, ProjectName: &pName}})
+		points = append(points, &model.PointDetails{Rule: &point.Rule, Value: &value, Metadata: &model.Metadata{Slot: &slot, ProjectName: &pName, Date: &date, Event: &event, Boosts: &boosts}})
 	}
 	return &model.LeaderboardLineData{
 		ID:            item.ID.String(),

@@ -31,6 +31,9 @@ type LeaderboardLineData struct {
 type Metadata struct {
 	Slot        *string `json:"slot,omitempty"`
 	ProjectName *string `json:"project_name,omitempty"`
+	Date        *string `json:"date,omitempty"`
+	Event       *string `json:"event,omitempty"`
+	Boosts      *string `json:"boosts,omitempty"`
 }
 
 type NextBoostForValue struct {

@@ -4,6 +4,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/carbonable/leaderboard/internal/starknet"
@@ -80,10 +82,32 @@ type MinterBuyValue struct {
 	Value u256.Int  `gorm:"type:numeric"`
 }
 
+func boostsToString(s Score, metadata EventMetadata) EventMetadata {
+	if len(s.Boosts) > 0 {
+		var boosts []string
+		for _, b := range s.Boosts {
+			boosts = append(boosts, fmt.Sprintf("x%.1f - %s", float32(b.Value)/100, b.DisplayName))
+		}
+		metadata["boosts"] = strings.Join(boosts, " // ")
+	}
+	return metadata
+}
+
+func buildPointMetadata(s Score) EventMetadata {
+	metadata := s.Event.Metadata
+	// NOTE: convert to js usable timestamp
+	metadata["date"] = fmt.Sprintf("%d", s.Event.RecordedAt.Unix()*1000)
+	metadata["event"] = s.Event.EventName
+	metadata = boostsToString(s, metadata)
+
+	return metadata
+}
+
 func LeaderboardLineFromScore(wallet string, score []Score, totalScore u256.Int, categories *CategorisedScore) *LeaderboardLine {
 	var points Points
 	for _, s := range score {
-		points = append(points, Point{Metadata: s.Event.Metadata, Rule: string(s.Rule), Value: uint(s.Points.Uint64())})
+		metadata := buildPointMetadata(s)
+		points = append(points, Point{Metadata: metadata, Rule: string(s.Rule), Value: uint(s.Points.Uint64())})
 	}
 	return &LeaderboardLine{
 		WalletAddress: wallet,

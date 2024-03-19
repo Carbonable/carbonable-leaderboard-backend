@@ -24,6 +24,10 @@ type BoostCalculator interface {
 
 type Boost struct {
 	Name string
+	// Fiels used to append to metadata for
+	// UI display
+	DisplayName string
+	Value       int
 }
 
 type KarathuruFundingMilestoneBoostCalculator struct {
@@ -74,6 +78,9 @@ func (bc KarathuruFundingMilestoneBoostCalculator) Apply(e DomainEvent, b *Boost
 	for _, v := range bc.Steps {
 		if mv.Cmp(uint256.NewInt(uint64(v.step))) <= 0 {
 			s.Points = mulCoeficient(s.Points, uint256.NewInt(v.coef))
+			b.DisplayName = "Funding Karathuru"
+			b.Value = int(v.coef)
+			s.Boosts = append(s.Boosts, *b)
 			return s
 		}
 	}
@@ -119,6 +126,9 @@ func (bc ProjectValueBoostCalculator) Apply(e DomainEvent, b *Boost, s *Score) *
 	for _, v := range bc.Steps {
 		if s.Points.Cmp(uint256.NewInt(uint64(v.step*1000000))) >= 0 {
 			s.Points = mulCoeficient(s.Points, uint256.NewInt(v.coef))
+			b.DisplayName = "Funding Value"
+			b.Value = int(v.coef)
+			s.Boosts = append(s.Boosts, *b)
 			return s
 		}
 	}

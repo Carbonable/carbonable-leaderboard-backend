@@ -73,6 +73,9 @@ type ComplexityRoot struct {
 	}
 
 	Metadata struct {
+		Boosts      func(childComplexity int) int
+		Date        func(childComplexity int) int
+		Event       func(childComplexity int) int
 		ProjectName func(childComplexity int) int
 		Slot        func(childComplexity int) int
 	}
@@ -229,6 +232,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.LeaderboardLineData.WalletAddress(childComplexity), true
+
+	case "Metadata.boosts":
+		if e.complexity.Metadata.Boosts == nil {
+			break
+		}
+
+		return e.complexity.Metadata.Boosts(childComplexity), true
+
+	case "Metadata.date":
+		if e.complexity.Metadata.Date == nil {
+			break
+		}
+
+		return e.complexity.Metadata.Date(childComplexity), true
+
+	case "Metadata.event":
+		if e.complexity.Metadata.Event == nil {
+			break
+		}
+
+		return e.complexity.Metadata.Event(childComplexity), true
 
 	case "Metadata.project_name":
 		if e.complexity.Metadata.ProjectName == nil {
@@ -1395,6 +1419,129 @@ func (ec *executionContext) fieldContext_Metadata_project_name(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Metadata_date(ctx context.Context, field graphql.CollectedField, obj *model.Metadata) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Metadata_date(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Metadata_date(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Metadata",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Metadata_event(ctx context.Context, field graphql.CollectedField, obj *model.Metadata) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Metadata_event(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Event, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Metadata_event(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Metadata",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Metadata_boosts(ctx context.Context, field graphql.CollectedField, obj *model.Metadata) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Metadata_boosts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Boosts, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Metadata_boosts(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Metadata",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _NextBoostForValue_missing(ctx context.Context, field graphql.CollectedField, obj *model.NextBoostForValue) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_NextBoostForValue_missing(ctx, field)
 	if err != nil {
@@ -1913,6 +2060,12 @@ func (ec *executionContext) fieldContext_PointDetails_metadata(ctx context.Conte
 				return ec.fieldContext_Metadata_slot(ctx, field)
 			case "project_name":
 				return ec.fieldContext_Metadata_project_name(ctx, field)
+			case "date":
+				return ec.fieldContext_Metadata_date(ctx, field)
+			case "event":
+				return ec.fieldContext_Metadata_event(ctx, field)
+			case "boosts":
+				return ec.fieldContext_Metadata_boosts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Metadata", field.Name)
 		},
@@ -4341,6 +4494,12 @@ func (ec *executionContext) _Metadata(ctx context.Context, sel ast.SelectionSet,
 			out.Values[i] = ec._Metadata_slot(ctx, field, obj)
 		case "project_name":
 			out.Values[i] = ec._Metadata_project_name(ctx, field, obj)
+		case "date":
+			out.Values[i] = ec._Metadata_date(ctx, field, obj)
+		case "event":
+			out.Values[i] = ec._Metadata_event(ctx, field, obj)
+		case "boosts":
+			out.Values[i] = ec._Metadata_boosts(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

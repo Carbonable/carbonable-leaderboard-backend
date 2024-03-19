@@ -5,6 +5,9 @@
 type Metadata {
   slot: String
   project_name: String
+  date: String
+  event: String
+  boosts: String
 }
 
 type PointDetails {

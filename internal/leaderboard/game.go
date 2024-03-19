@@ -48,6 +48,7 @@ type ScoreCalculatorBuilderFn func() ScoreCalculator
 type Score struct {
 	Points *u256.Int
 	Rule   RuleName
+	Boosts []Boost
 	Event  DomainEvent
 }
 
