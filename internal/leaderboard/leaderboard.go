@@ -82,7 +82,7 @@ type MinterBuyValue struct {
 	Value u256.Int  `gorm:"type:numeric"`
 }
 
-func boostsToString(s Score, metadata EventMetadata) EventMetadata {
+func boostsToString(s *Score, metadata EventMetadata) EventMetadata {
 	if len(s.Boosts) > 0 {
 		var boosts []string
 		for _, b := range s.Boosts {
@@ -93,7 +93,7 @@ func boostsToString(s Score, metadata EventMetadata) EventMetadata {
 	return metadata
 }
 
-func buildPointMetadata(s Score) EventMetadata {
+func buildPointMetadata(s *Score) EventMetadata {
 	metadata := s.Event.Metadata
 	// NOTE: convert to js usable timestamp
 	metadata["date"] = fmt.Sprintf("%d", s.Event.RecordedAt.Unix()*1000)
@@ -106,7 +106,11 @@ func buildPointMetadata(s Score) EventMetadata {
 func LeaderboardLineFromScore(wallet string, score []Score, totalScore u256.Int, categories *CategorisedScore) *LeaderboardLine {
 	var points Points
 	for _, s := range score {
-		metadata := buildPointMetadata(s)
+		// FIX: Nil map entry issue on score computation
+		if s.Event.Metadata == nil {
+			s.Event.Metadata = EventMetadata{}
+		}
+		metadata := buildPointMetadata(&s)
 		points = append(points, Point{Metadata: metadata, Rule: string(s.Rule), Value: uint(s.Points.Uint64())})
 	}
 	return &LeaderboardLine{
