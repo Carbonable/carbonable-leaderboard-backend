@@ -145,6 +145,25 @@ var _ = Describe("Boost", func() {
 			It("should get proper interval", testProperInterval(v.value, v.boost, v.next, v.nextBoost))
 		}
 	})
+
+	Context("Boost Aggregation", func() {
+		It("should apply both boosts", func() {
+			buy := buyProjectEvt("Karathuru", 11000*1000000)
+
+			scm := leaderboard.FullScoreCalculatorManager(newGivenValueMinterValueAggregator(74109))
+			pr := leaderboard.NewPersonnalRanking("aBeautifulWallet", []leaderboard.DomainEvent{buy})
+			ll := pr.ComputeScore(scm)
+
+			Expect(len(ll.Points)).To(Equal(2))
+			for _, p := range ll.Points {
+				if p.Rule == string(leaderboard.AmountFundRuleName) {
+					Expect(p.Metadata["boosts"]).To(Equal("x2.0 - Funding Karathuru // x3.0 - Funding Value"))
+				} else {
+					Expect(p.Metadata["boosts"]).To(Equal(""))
+				}
+			}
+		})
+	})
 })
 
 func testKarathuruMilestone(value uint64, expected string) func() {

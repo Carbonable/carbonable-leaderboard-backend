@@ -122,7 +122,6 @@ const leaderboardQuery = `WITH leaderboard AS (
      FROM leaderboard_lines l)
 SELECT l.*
 	FROM leaderboard l ORDER BY l.total_score::INT DESC;`
-
 const leaderboardQueryWhere = `WITH leaderboard AS (
    SELECT l.*,
 	ROW_NUMBER() OVER(ORDER BY l.total_score::INT DESC) AS position
@@ -144,8 +143,9 @@ func itemToGqlModel(item leaderboardQueryResult) *model.LeaderboardLineData {
 		date := point.Metadata["date"]
 		event := point.Metadata["event"]
 		boosts := point.Metadata["boosts"]
+		rule := point.Metadata["rule"]
 		value := int(point.Value)
-		points = append(points, &model.PointDetails{Rule: &point.Rule, Value: &value, Metadata: &model.Metadata{Slot: &slot, ProjectName: &pName, Date: &date, Event: &event, Boosts: &boosts}})
+		points = append(points, &model.PointDetails{Rule: &point.Rule, Value: &value, Metadata: &model.Metadata{Slot: &slot, ProjectName: &pName, Date: &date, Event: &event, Rule: &rule, Boosts: &boosts}})
 	}
 	return &model.LeaderboardLineData{
 		ID:            item.ID.String(),
@@ -160,7 +160,6 @@ func itemToGqlModel(item leaderboardQueryResult) *model.LeaderboardLineData {
 		Position: item.Position,
 	}
 }
-
 func dbModelToGqlModel(dbModel []leaderboardQueryResult) []*model.LeaderboardLineData {
 	var gqlModel []*model.LeaderboardLineData
 	for _, line := range dbModel {

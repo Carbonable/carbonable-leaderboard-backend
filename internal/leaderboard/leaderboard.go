@@ -83,6 +83,7 @@ type MinterBuyValue struct {
 }
 
 func boostsToString(s *Score, metadata EventMetadata) EventMetadata {
+	// FIX: clear event metadata state
 	if len(s.Boosts) > 0 {
 		var boosts []string
 		for _, b := range s.Boosts {
@@ -94,10 +95,13 @@ func boostsToString(s *Score, metadata EventMetadata) EventMetadata {
 }
 
 func buildPointMetadata(s *Score) EventMetadata {
-	metadata := s.Event.Metadata
+	metadata := make(EventMetadata)
+	metadata["project_name"] = s.Event.Metadata["project_name"]
+	metadata["slot"] = s.Event.Metadata["slot"]
 	// NOTE: convert to js usable timestamp
 	metadata["date"] = fmt.Sprintf("%d", s.Event.RecordedAt.Unix()*1000)
 	metadata["event"] = s.Event.EventName
+	metadata["rule"] = string(s.Rule)
 	metadata = boostsToString(s, metadata)
 
 	return metadata
@@ -111,6 +115,7 @@ func LeaderboardLineFromScore(wallet string, score []Score, totalScore u256.Int,
 			s.Event.Metadata = EventMetadata{}
 		}
 		metadata := buildPointMetadata(&s)
+
 		points = append(points, Point{Metadata: metadata, Rule: string(s.Rule), Value: uint(s.Points.Uint64())})
 	}
 	return &LeaderboardLine{

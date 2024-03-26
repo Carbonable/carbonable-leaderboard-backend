@@ -170,7 +170,7 @@ func FullScoreCalculatorManager(aggregator BuyValueAggregator) *ScoreCalculatorM
 		),
 		WithBoosters(
 			NewKaratFundingMilestoneBoostCalculator(aggregator),
-			&ProjectValueBoostCalculator{},
+			DefaultProjectValueBoostCalculator(),
 		),
 	)
 }
@@ -190,7 +190,6 @@ func (scm ScoreCalculatorManager) ComputeScore(evt DomainEvent, score []Score) [
 						c.Apply(evt, b, s)
 					}
 				}
-
 				score = append(score, *s)
 			}
 		}

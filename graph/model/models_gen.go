@@ -34,6 +34,7 @@ type Metadata struct {
 	Date        *string `json:"date,omitempty"`
 	Event       *string `json:"event,omitempty"`
 	Boosts      *string `json:"boosts,omitempty"`
+	Rule        *string `json:"rule,omitempty"`
 }
 
 type NextBoostForValue struct {

@@ -8,6 +8,7 @@ type Metadata {
   date: String
   event: String
   boosts: String
+  rule: String
 }
 
 type PointDetails {

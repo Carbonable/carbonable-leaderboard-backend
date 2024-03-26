@@ -11,9 +11,9 @@ import (
 
 func TestBuildPointMetadata(t *testing.T) {
 	assert := assert.New(t)
-	s := Score{
+	s := &Score{
 		Points: uint256.NewInt(100),
-		Rule:   "event:name",
+		Rule:   "therule",
 		Boosts: []Boost{
 			{
 				Name:        "Karathuru",
@@ -44,4 +44,5 @@ func TestBuildPointMetadata(t *testing.T) {
 	assert.Equal(metadata["date"], "1710068400000", "date should match")
 	assert.Equal(metadata["event"], "event:name", "event name should match")
 	assert.Equal(metadata["boosts"], "x2.0 - Funding Karathuru // x1.5 - Funding project", "event name should match")
+	assert.Equal(metadata["rule"], "therule", "event rule should match")
 }
