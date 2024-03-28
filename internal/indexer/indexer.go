@@ -50,8 +50,8 @@ type EventIndexer struct {
 func (i *EventIndexer) Index(block *starknet.GetBlockResponse) error {
 	address := i.contract.Address
 
-	go i.indexTransaction(address, block)
-	go i.indexEvent(address, block)
+	i.indexTransaction(address, block)
+	i.indexEvent(address, block)
 
 	i.saveContractIndexLatestBlock(address, block.BlockNumber)
 
