@@ -82,4 +82,28 @@ func StarknetHandlers(e *echo.Echo, storage indexer.Storage, db *gorm.DB, rpc st
 			Events: events,
 		})
 	})
+
+	e.GET("/contract-idx/:address", func(c echo.Context) error {
+		address := c.Param("address")
+		contractIdxKey := []byte(fmt.Sprintf("IDX#%s", address))
+
+		contractIdx := indexer.NewContractIndex(0)
+		if storage.Has(contractIdxKey) {
+			idx := storage.Get(contractIdxKey)
+			err := contractIdx.Decode(idx)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, ApiErrorResponse{
+					Error:  "failed to decode contract index",
+					Reason: err.Error(),
+				})
+			}
+
+			return c.JSON(http.StatusOK, contractIdx)
+		}
+
+		return c.JSON(http.StatusNotFound, ApiErrorResponse{
+			Error:  "contract index not found",
+			Reason: "contract index not found",
+		})
+	})
 }

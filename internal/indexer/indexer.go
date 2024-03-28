@@ -216,6 +216,10 @@ func (i *EventIndexer) saveContractIndexInteresstingBlock(address string, block 
 func (i *EventIndexer) saveContractIndexLatestBlock(address string, block uint64) {
 	idx, key := i.getContractIdx(address, block)
 
+	maxBlock := slices.Max(idx.Blocks)
+	if maxBlock > block {
+		block = maxBlock
+	}
 	idx.SetLatestBlock(block)
 
 	buf, err := idx.Encode()

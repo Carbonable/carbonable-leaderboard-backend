@@ -19,6 +19,16 @@ type L2ToL1Message struct {
 	Payload     []string `json:"payload"`
 }
 
+type GasPrice struct {
+	PriceInWei string `json:"price_in_wei"`
+	PriceInFri string `json:"price_in_fri"`
+}
+
+type DataAvailability struct {
+	L1Gas     uint64 `json:"l1_gas"`
+	L1DataGas uint64 `json:"l1_data_gas"`
+}
+
 type Event struct {
 	RecordedAt  time.Time `json:"recorded_at"`
 	EventId     string    `json:"event_id"`
@@ -37,8 +47,9 @@ type ExecutionResources struct {
 		EcdsaBuiltin      uint `json:"ecdsa_builtin"`
 		EcOpBuiltin       uint `json:"ec_op_builtin"`
 	} `json:"builtin_instance_counter"`
-	NSteps       uint `json:"n_steps"`
-	NMemoryHoles uint `json:"n_memory_holes"`
+	NSteps           uint             `json:"n_steps"`
+	NMemoryHoles     uint             `json:"n_memory_holes"`
+	DataAvailability DataAvailability `json:"data_availability"`
 }
 
 type TransactionReceipt struct {
@@ -53,17 +64,22 @@ type TransactionReceipt struct {
 }
 
 type GetBlockResponse struct {
-	BlockHash           string               `json:"block_hash"`
-	ParentBlockHash     string               `json:"parent_block_hash"`
-	StateRoot           string               `json:"state_root"`
-	Status              string               `json:"status"`
-	GasPrice            string               `json:"gas_price"`
-	SequencerAddress    string               `json:"sequencer_address"`
-	StarknetVersion     string               `json:"starknet_version"`
-	Transactions        []Transaction        `json:"transactions"`
-	TransactionReceipts []TransactionReceipt `json:"transaction_receipts"`
-	BlockNumber         uint64               `json:"block_number"`
-	Timestamp           uint64               `json:"timestamp"`
+	BlockHash             string               `json:"block_hash"`
+	ParentBlockHash       string               `json:"parent_block_hash"`
+	StateRoot             string               `json:"state_root"`
+	Status                string               `json:"status"`
+	GasPrice              string               `json:"gas_price"`
+	SequencerAddress      string               `json:"sequencer_address"`
+	StarknetVersion       string               `json:"starknet_version"`
+	Transactions          []Transaction        `json:"transactions"`
+	TransactionReceipts   []TransactionReceipt `json:"transaction_receipts"`
+	BlockNumber           uint64               `json:"block_number"`
+	Timestamp             uint64               `json:"timestamp"`
+	TransactionCommitment string               `json:"transaction_commitment"`
+	EventCommitment       string               `json:"event_commitment"`
+	L1DaMode              string               `json:"l1_da_mode"`
+	L1GasPrice            GasPrice             `json:"l1_gas_price"`
+	L1DataGasPrice        GasPrice             `json:"l1_data_gas_price"`
 }
 
 type SlotUri struct {
