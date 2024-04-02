@@ -29,3 +29,16 @@ func TestCallSlotOf(t *testing.T) {
 	// Token ID 1 is in slot 1
 	assert.Equal(t, slot, uint64(1))
 }
+
+func TestGetRemainingValue(t *testing.T) {
+	mainnet := starknet.MainnetJsonRpcStarknetClient()
+
+	rv, err := starknet.GetRemainingValue(mainnet, "0x07336c28e621dce9940603fb85136c57a3c46ce22e4ec862eeb0bdb0cd5cc9d9")
+	if err != nil {
+		t.Errorf("error while testing GetSlotOf : %s", err)
+	}
+
+	// Token ID 1 is in slot 1
+	assert.NilError(t, err)
+	assert.Equal(t, nil != rv, true)
+}

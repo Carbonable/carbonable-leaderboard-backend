@@ -2,6 +2,7 @@ package leaderboard
 
 import (
 	"slices"
+	"time"
 
 	"github.com/charmbracelet/log"
 	"github.com/holiman/uint256"
@@ -9,7 +10,7 @@ import (
 
 type (
 	BuyValueAggregator interface {
-		GetMinterCurrentValue(identifier string) (uint256.Int, error)
+		GetMinterCurrentValue(identifier string, recordedAt time.Time) (uint256.Int, error)
 	}
 	PersistBuyValue interface {
 		SaveMinterCurrentValue(identifier string, value uint256.Int) error
@@ -66,7 +67,7 @@ func mulCoeficient(value *uint256.Int, coef *uint256.Int) *uint256.Int {
 }
 
 func (bc KarathuruFundingMilestoneBoostCalculator) Apply(e DomainEvent, b *Boost, s *Score) *Score {
-	mv, err := bc.Aggregator.GetMinterCurrentValue("karathuru")
+	mv, err := bc.Aggregator.GetMinterCurrentValue("Karathuru", e.RecordedAt)
 	if err != nil {
 		log.Error("error getting minter value", "error", err)
 		return nil

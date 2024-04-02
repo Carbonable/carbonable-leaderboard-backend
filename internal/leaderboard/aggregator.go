@@ -3,7 +3,9 @@ package leaderboard
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/carbonable/leaderboard/internal/starknet"
 	"github.com/charmbracelet/log"
 	"github.com/holiman/uint256"
 	"gorm.io/gorm"
@@ -23,11 +25,31 @@ type PgMinterBuyValueAggregator struct {
 	db *gorm.DB
 }
 
-func (a *PgMinterBuyValueAggregator) GetMinterCurrentValue(identifier string) (uint256.Int, error) {
-	return *uint256.NewInt(0), nil
+const minterBuyValueAtQuery = `SELECT de.data->>'value' from domain_events de
+where de.event_name IN ('minter:buy', 'minter:airdrop') and de.metadata->>'project_name' = ? and de.recorded_at <= ?;
+`
+
+// DomainEvents are immutable but replayable. Therefore we need to recompute mintervalue each time.
+// To get minter value properly, get the sum of bought value of the past events
+func (a *PgMinterBuyValueAggregator) GetMinterCurrentValue(identifier string, recordedAt time.Time) (uint256.Int, error) {
+	var lines []string
+
+	res := a.db.Raw(minterBuyValueAtQuery, identifier, recordedAt).Scan(&lines)
+	if res.Error != nil {
+		return uint256.Int{}, res.Error
+	}
+	sum := uint256.NewInt(0)
+	for _, l := range lines {
+		lv := uint256.MustFromHex(l)
+		sum.Add(lv, sum)
+	}
+	sum.Div(sum, uint256.NewInt(1e6))
+
+	log.Info("minter value", "identifier", identifier, "value", sum.String())
+	return *sum, nil
 }
 
-func NewPgMinterBuyValueAggregator(db *gorm.DB) *PgMinterBuyValueAggregator {
+func NewPgMinterBuyValueAggregator(db *gorm.DB, client starknet.StarknetRpcClient) *PgMinterBuyValueAggregator {
 	return &PgMinterBuyValueAggregator{
 		db: db,
 	}
@@ -37,6 +59,7 @@ func (a *PgLeaderboardAggregator) Run(ctx context.Context) {
 	errch := make(chan error)
 	// create tmp table
 	createTempTable(a.db)
+
 	scm := FullScoreCalculatorManager(&PgMinterBuyValueAggregator{
 		db: a.db,
 	})

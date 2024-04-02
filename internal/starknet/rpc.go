@@ -11,6 +11,7 @@ import (
 
 	"github.com/NethermindEth/juno/core/felt"
 	"github.com/charmbracelet/log"
+	"github.com/holiman/uint256"
 )
 
 type (
@@ -221,6 +222,14 @@ func GetSlotOf(rpc StarknetRpcClient, address string, tokenId uint64) (uint64, e
 	}
 
 	return res[0].Uint64(), nil
+}
+
+func GetRemainingValue(rpc StarknetRpcClient, address string) (*uint256.Int, error) {
+	res, err := rpc.Call(address, "get_carbonable_project_address", []felt.Felt{})
+	if err != nil {
+		return nil, err
+	}
+	return uint256.MustFromHex(res[0].String()), nil
 }
 
 func MinterGetProjectAddress(rpc StarknetRpcClient, address string) (string, error) {
