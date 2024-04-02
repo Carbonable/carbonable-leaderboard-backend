@@ -1,6 +1,8 @@
 package leaderboard_test
 
 import (
+	"time"
+
 	"github.com/carbonable/leaderboard/internal/leaderboard"
 	"github.com/holiman/uint256"
 	. "github.com/onsi/ginkgo/v2"
@@ -11,7 +13,7 @@ type givenValueMinterValueAggregator struct {
 	value *uint256.Int
 }
 
-func (a *givenValueMinterValueAggregator) GetMinterCurrentValue(identifier string) (uint256.Int, error) {
+func (a *givenValueMinterValueAggregator) GetMinterCurrentValue(identifier string, recordedAt time.Time) (uint256.Int, error) {
 	return *a.value, nil
 }
 

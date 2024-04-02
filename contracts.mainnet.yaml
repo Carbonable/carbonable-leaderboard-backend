@@ -6,7 +6,6 @@ contracts:
       Transfer: "project:transfer"
       TransferValue: "project:transfer-value"
       SlotChanged: "project:slot-changed"
-
   - name: minter_banegas_farm
     address: 0x065ff26209e5b2089e84488568ca84d7981d95f2ccb77f2f39878c4ab98e96cc
     events:

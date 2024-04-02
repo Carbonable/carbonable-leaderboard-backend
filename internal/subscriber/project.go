@@ -1,16 +1,13 @@
 package subscriber
 
 import (
-	"errors"
 	"time"
 
 	"github.com/carbonable/leaderboard/internal/indexer"
 	"github.com/carbonable/leaderboard/internal/leaderboard"
 	"github.com/carbonable/leaderboard/internal/starknet"
 	"github.com/charmbracelet/log"
-	u256 "github.com/holiman/uint256"
 	"github.com/nats-io/nats.go"
-	"github.com/oklog/ulid/v2"
 	"gorm.io/gorm"
 )
 
@@ -72,8 +69,6 @@ func ProjectTransferValueSubscriber(storage indexer.Storage, db *gorm.DB, rpc st
 
 		evt := leaderboard.DomainEventFromStarknetEvent(event, "project:transfer-value", wallet, data, metadata)
 		db.Create(&evt)
-
-		updateMinterBoughtValue(db, evt)
 	}
 }
 
@@ -146,38 +141,4 @@ func getTransferEvent(db *gorm.DB, tokenId string, slot string) leaderboard.Doma
 func getWalletFromTransferEvent(db *gorm.DB, tokenId string, slot string) string {
 	evt := getTransferEvent(db, tokenId, slot)
 	return evt.WalletAddress
-}
-
-func updateMinterBoughtValue(db *gorm.DB, evt *leaderboard.DomainEvent) {
-	transferEvent := getTransferEvent(db, evt.Data["to_token_id"], evt.Metadata["slot"])
-
-	var minterBuyValue leaderboard.MinterBuyValue
-	err := db.Where("name = ? and slot = ?", transferEvent.Metadata["project_name"], transferEvent.Metadata["slot"]).First(&minterBuyValue).Error
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		minterBuyValue = leaderboard.MinterBuyValue{
-			Name:  evt.Metadata["project_name"],
-			Slot:  evt.Metadata["slot"],
-			Value: *u256.NewInt(0),
-			ID:    ulid.Make(),
-		}
-	}
-	value, conversionErr := u256.FromHex(evt.Data["value"])
-	if conversionErr != nil {
-		log.Error("failed to convert value to u256", "error", err)
-	}
-	var newVal u256.Int
-	newVal.Add(&minterBuyValue.Value, value)
-	minterBuyValue.Value = newVal
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		db.Model(&minterBuyValue).Create(map[string]interface{}{
-			"ID":    minterBuyValue.ID,
-			"Name":  minterBuyValue.Name,
-			"Slot":  minterBuyValue.Slot,
-			"Value": minterBuyValue.Value.Uint64(),
-		})
-		return
-	}
-	db.Model(&minterBuyValue).Where("name = ? and slot = ?", minterBuyValue.Name, minterBuyValue.Slot).Update("value", minterBuyValue.Value.Uint64())
 }

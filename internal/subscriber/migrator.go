@@ -38,6 +38,9 @@ func MigratorMigrationSubscriber(storage indexer.Storage, db *gorm.DB, rpc stark
 
 		evt := leaderboard.DomainEventFromStarknetEvent(event, "migrator:migration", event.Data[0], data, metadata)
 		db.Create(&evt)
+
+		// update the minterbuyValue
+		updateMinterBoughtValue(db, evt)
 	}
 }
 
