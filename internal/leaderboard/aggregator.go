@@ -117,6 +117,7 @@ func NewPgAggregrator(db *gorm.DB) *PgLeaderboardAggregator {
 }
 
 func createTempTable(db *gorm.DB) {
+	_ = db.AutoMigrate(&LeaderboardLine{})
 	db.Exec("CREATE TABLE tmp_leaderboard_lines AS SELECT * FROM leaderboard_lines WHERE false")
 }
 
@@ -125,10 +126,11 @@ func backupLeaderboardLines(db *gorm.DB) {
 }
 
 func hotSwapTables(db *gorm.DB) {
-	db.Exec("DROP TABLE leaderboard_lines")
+	db.Exec("ALTER TABLE leaderboard_lines RENAME TO leaderboard_lines_old")
 	db.Exec("ALTER TABLE tmp_leaderboard_lines RENAME TO leaderboard_lines")
 }
 
 func cleanupTmpTables(db *gorm.DB) {
 	db.Exec("DROP TABLE bck_leaderboard_lines")
+	db.Exec("DROP TABLE leaderboard_lines_old")
 }
